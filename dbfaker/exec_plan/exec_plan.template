@@ -1,0 +1,19 @@
+# coding: utf-8
+from datetime import timedelta, date, datetime
+import faker
+from sqlalchemy import *
+import random
+from multiprocessing import Pool
+
+metadata = MetaData()
+
+{tables_def}
+
+def get_engine():
+    return {engine_init}
+engine = get_engine()
+metadata.drop_all(engine)
+metadata.create_all(engine)
+
+{data_generate}
+

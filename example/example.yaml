@@ -1,0 +1,59 @@
+locale: zh_CN
+engine:
+  type: mysql
+  username: root
+  password: root123
+  host: localhost
+  port: 3306
+  db: fake_sample
+tables:
+  user:
+    row_cnt: 100
+    user_defined_fake_func:
+    schema:
+      id:
+        type: Integer
+        pk: true
+      name:
+        fake: [name]
+      gender:
+        fake: [random_element, {elements: "('男', '女')"}]
+      mail:
+        fake: [email]
+      birthdate:
+        type: Date,
+        fake: [date_between_dates, {date_start: 'date(1960, 1, 1)', date_end: 'date(1995, 12, 31)'}]
+      created_at:
+        type: Date,
+        fake: [date_between_dates, {date_start: '${birthdate} + timedelta(days=1)'}]
+  company:
+    row_cnt: 10
+    schema:
+      id:
+        type: Integer
+        pk: true
+      name:
+        fake: [company]
+      address:
+        fake: [address]
+      established_at:
+        type: Date
+        fake: [date_between_dates]
+  hired:
+    row_cnt: 200
+    schema:
+      id:
+        type: Integer
+        pk: true
+      company_id:
+        type: Integer
+        fk: company.id
+      user_id:
+        type: Integer
+        fk: user.id
+      job:
+        fake: [job]
+      hired_at:
+        type: Date
+        fake: [date_between_dates, date_start: 'max(${company.established_at}, ${user.birthdate} + timedelta(days=365 * 22))']
+
