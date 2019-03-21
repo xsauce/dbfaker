@@ -13,7 +13,7 @@ pip install -r requirements.txt
 ## 使用示例
 
 ```
-python dbfaker/dbfaker.py -t ../example/example.yaml -p 10
+python dbfaker/dbfaker.py -t example/example.yaml -p 10
 ```
 
 ## 查看帮助
