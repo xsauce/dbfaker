@@ -81,6 +81,7 @@ class DataGenerator:
         self.dependency_tables = set()
         self.tmp_vars = []
         self.tmp_col_vars = {}
+        self.fake_load_custom_providers = self.load_custom_faker_providers()
 
     def generate(self):
         func_clause = self.generate_func()
@@ -134,6 +135,7 @@ def gen_{tbl}(row_cnt):
     with engine.connect() as conn:
         fake = faker.Faker('{locale}')
         fake.seed(random.random())
+        {fake_custom_providers}
         {tbl}_list = []
         for i in range(row_cnt):
             {tmp_vars}
@@ -143,7 +145,7 @@ def gen_{tbl}(row_cnt):
         conn.execute({tbl}.insert(), {tbl}_list)
     return 1
         '''.format(locale=self.template_data["locale"], tbl=self.tbl, tmp_vars='\n            '.join(self.tmp_vars),
-                   column_list=',\n                '.join(column_list))
+                   column_list=',\n                '.join(column_list), fake_custom_providers='\n        '.join(self.load_custom_faker_providers()))
 
     def build_fake_func(self, fake_func, col):
         fake_func_clause = "fake.%s()" % fake_func[0]
@@ -191,5 +193,10 @@ def gen_{tbl}(row_cnt):
                 fake_func_clause=self.build_fake_func(fake_func, col)), "order": 0}
         return tmp_col_var
 
+    def load_custom_faker_providers(self):
+        lst = []
+        for p in set(self.template_data.get("providers", [])):
+            lst.append("fake.add_provider(%s)" % p)
+        return lst
 
 

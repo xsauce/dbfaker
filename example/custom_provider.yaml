@@ -1,0 +1,16 @@
+locale: zh_CN
+engine:
+  type: mysql
+  username: root
+  password: root123
+  host: localhost
+  port: 3306
+  db: fake_sample
+providers:
+  - CustomProvider
+tables:
+  test_provider:
+    row_cnt: 3
+    schema:
+      item:
+        fake: [pop_from_lst]

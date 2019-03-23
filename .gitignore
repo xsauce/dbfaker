@@ -1,4 +1,4 @@
-example/example.py
+example/*.py
 # mac
 .DS_Store
 */.DS_Store

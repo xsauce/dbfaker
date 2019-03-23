@@ -4,6 +4,7 @@ import faker
 from sqlalchemy import *
 import random
 from multiprocessing import Pool
+from providers import *
 
 metadata = MetaData()
 
