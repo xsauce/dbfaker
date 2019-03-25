@@ -80,7 +80,7 @@ class DataGenerator:
         self.process_count = process_count
         self.dependency_tables = set()
         self.tmp_vars = []
-        self.tmp_col_vars = {}
+        self.tmp_col_vars = {"tmp_%s_%s" % (self.tbl, key): {"clause": "", "order": 0} for key in self.tbl_def["schema"]}
         self.fake_load_custom_providers = self.load_custom_faker_providers()
 
     def generate(self):
@@ -187,10 +187,9 @@ def gen_{tbl}(row_cnt):
         tmp_col_var = "tmp_{tbl}_{col}".format(tbl=tbl, col=col)
         if tmp_col_var in self.tmp_col_vars:
             self.tmp_col_vars[tmp_col_var]["order"] += 1
-        else:
-            self.tmp_col_vars[tmp_col_var] = {"clause": "{tmp_col_var} = {fake_func_clause}".format(
+            self.tmp_col_vars[tmp_col_var]["clause"] = "{tmp_col_var} = {fake_func_clause}".format(
                 tmp_col_var=tmp_col_var,
-                fake_func_clause=self.build_fake_func(fake_func, col)), "order": 0}
+                fake_func_clause=self.build_fake_func(fake_func, col))
         return tmp_col_var
 
     def load_custom_faker_providers(self):
