@@ -8,9 +8,12 @@ engine:
   db: fake_sample
 providers:
   - CustomProvider
+  - ParameterProvider
 tables:
   test_provider:
     row_cnt: 3
     schema:
       item:
         fake: [pop_from_lst]
+      item2:
+        fake: [add_s]
